@@ -1,0 +1,608 @@
+/* ── Reset & Variables ────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --blue: #2563eb;
+  --blue-dk: #1d4ed8;
+  --green: #059669;
+  --red: #dc2626;
+  --red-dk: #b91c1c;
+
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+
+  --text: #0f172a;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, .08), 0 1px 2px rgba(0, 0, 0, .05);
+
+  /* 16px minimum — prevents iOS input zoom */
+  font-size: 16px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Page Layout ──────────────────────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: 640px;
+  /* comfortable on large phones and tablets */
+  margin: 0 auto;
+}
+
+.full-screen-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* ── Spinner ──────────────────────────────────────────────────────────────── */
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--blue);
+  color: #fff;
+  gap: 8px;
+}
+
+.header-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-name {
+  font-size: 14px;
+  opacity: .85;
+}
+
+.btn-logout {
+  background: rgba(255, 255, 255, .2);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-logout:active {
+  background: rgba(255, 255, 255, .3);
+}
+
+/* ── Search ───────────────────────────────────────────────────────────────── */
+.search-bar {
+  position: relative;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.search-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 36px 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--blue);
+  background: #fff;
+}
+
+.search-clear {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.search-header {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--text-2);
+  background: var(--bg);
+}
+
+
+/* ── Day Navigator ────────────────────────────────────────────────────────── */
+.day-navigator {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 4px 8px;
+}
+
+.nav-arrow {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--blue);
+  cursor: pointer;
+  padding: 8px 16px;
+  min-width: 52px;
+  text-align: center;
+  line-height: 1;
+}
+
+.nav-arrow:active {
+  opacity: .6;
+}
+
+.day-label {
+  flex: 1;
+  text-align: center;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  padding: 8px 4px;
+}
+
+.day-label.is-today {
+  color: var(--blue);
+}
+
+/* ── Schedule Body ────────────────────────────────────────────────────────── */
+.schedule-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 12px 0;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-3);
+}
+
+/* ── Dentist Section ──────────────────────────────────────────────────────── */
+.dentist-section {
+  margin-bottom: 16px;
+}
+
+.dentist-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--surface);
+  border-radius: var(--radius) var(--radius) 0 0;
+  border-left: 4px solid #ccc;
+  border-bottom: 1px solid var(--border);
+}
+
+.dentist-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dentist-name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.appt-count {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.empty-day {
+  background: var(--surface);
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text-3);
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+/* ── Appointment Card ─────────────────────────────────────────────────────── */
+.appointment-card {
+  background: var(--surface);
+  border-left: 4px solid #ccc;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.appointment-card:last-child {
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.appointment-card:not(.dentist-section > .appointment-card:first-of-type) {
+  border-top: 1px solid var(--border);
+}
+
+.card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  min-height: 56px;
+}
+
+.appt-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  width: 44px;
+  flex-shrink: 0;
+}
+
+.appt-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.appt-name {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.appt-phone {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.expand-icon {
+  font-size: 11px;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+
+.card-detail {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--border);
+  margin-top: 0;
+}
+
+.appt-notes {
+  font-size: 14px;
+  color: var(--text-2);
+  padding: 10px 0 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.btn-edit {
+  flex: 1;
+  height: 40px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.btn-delete {
+  flex: 1;
+  height: 40px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--red);
+}
+
+.btn-delete:disabled {
+  opacity: .5;
+}
+
+/* ── FAB ──────────────────────────────────────────────────────────────────── */
+.fab-container {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 16px;
+  background: linear-gradient(transparent, var(--bg) 40%);
+}
+
+.fab {
+  display: block;
+  width: 100%;
+  height: 52px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, .35);
+  letter-spacing: .2px;
+}
+
+.fab:active {
+  background: var(--blue-dk);
+  transform: scale(.98);
+}
+
+/* ── Login ────────────────────────────────────────────────────────────────── */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--bg);
+}
+
+.login-card {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.login-logo {
+  width: 200px;
+  /* adjust to taste */
+  height: auto;
+  margin-bottom: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-header h1 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.login-header p {
+  font-size: 14px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Appointment Form ─────────────────────────────────────────────────────── */
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px 4px 0;
+  min-width: 60px;
+}
+
+.form-header h1 {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.appt-form {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Shared Field Styles ──────────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0 12px;
+  height: 48px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 16px;
+  /* 16px prevents iOS zoom-on-focus */
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  appearance: auto;
+}
+
+.field textarea {
+  height: auto;
+  padding: 12px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+}
+
+
+.time-selects {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.time-selects select {
+  padding: 10px 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 16px;
+  background: white;
+  min-width: 90px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.time-selects select:focus {
+  border-color: #3b82f6;
+}
+
+.time-selects span {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.btn-primary {
+  height: 52px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-primary:active {
+  background: var(--blue-dk);
+}
+
+.btn-primary:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.btn-submit {
+  margin-top: 4px;
+}
+
+/* ── Error Banner ─────────────────────────────────────────────────────────── */
+.error-banner {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: var(--red);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ── Touch optimizations ──────────────────────────────────────────────────── */
+button,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+a {
+  color: var(--blue);
+}
