@@ -18,13 +18,17 @@ DATABASES = {
 
 FRONTEND_URL = config('FRONTEND_URL', default='')
 
-# With Vercel rewrites, the browser sees same-origin requests.
-# CORS is only needed for direct API calls (e.g. local dev of mobile app).
 CORS_ALLOWED_ORIGINS = [FRONTEND_URL] if FRONTEND_URL else []
 CORS_ALLOW_CREDENTIALS = True
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
 
-# Trust Vercel proxy headers
+CSRF_TRUSTED_ORIGINS = [
+    FRONTEND_URL,
+    'https://dental-scheduler-production-71a9.up.railway.app',
+]
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
