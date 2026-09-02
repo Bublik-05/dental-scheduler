@@ -19,10 +19,14 @@ DATABASES = {
 
 FRONTEND_URL = config('FRONTEND_URL', default='')
 
-CORS_ALLOWED_ORIGINS = [FRONTEND_URL] if FRONTEND_URL else []
+CORS_ALLOWED_ORIGINS = [
+    FRONTEND_URL,
+    'https://dental-scheduler-seven.vercel.app',
+    'https://dental-scheduler-1-db0l.onrender.com',
+]
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"https://dental-scheduler.*\.vercel\.app",
-    'https://dental-scheduler-1-db0l.onrender.com',
+    r"https://dental-scheduler.*\.onrender\.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
@@ -42,6 +46,8 @@ CSRF_COOKIE_SAMESITE = 'None'
 CSRF_TRUSTED_ORIGINS = [
     FRONTEND_URL,
     'https://dental-scheduler-bvay.onrender.com',
+    'https://dental-scheduler-1-db0l.onrender.com',
+    'https://dental-scheduler-seven.vercel.app',
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
