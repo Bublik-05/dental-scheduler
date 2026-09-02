@@ -18,7 +18,7 @@ DATABASES = {
 
 FRONTEND_URL = config('FRONTEND_URL', default='')
 
-CORS_ALLOWED_ORIGINS = [
+CORS_ALLOWED_ORIGINS = [FRONTEND_URL] if FRONTEND_URL else [
     'https://dental-scheduler-seven.vercel.app',
     'https://dental-scheduler-98nzsa7zz-bublik-05s-projects.vercel.app',
 ]
