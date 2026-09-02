@@ -43,7 +43,3 @@ class Appointment(models.Model):
             f"@ {self.date} {self.start_time}"
         )
 
-    def clean(self):
-        # Basic validation: clinic hours Mon-Sat 09:00-21:00
-        if self.date and self.date.weekday() == 6:  # Sunday = 6
-            raise ValidationError('Clinic is closed on Sundays.')
